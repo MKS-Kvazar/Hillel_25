@@ -53,24 +53,18 @@ public class Main {
         System.out.println("Finish Task 2");
     }
 
-    void Task_3(){
+    void Task_3() {
         System.out.println("Start Task 3");
         Callable<String> task = new LoadingTask();
         Future<String> result = new FutureTask<>(task);
         Thread thread = new Thread((Runnable) result);
         thread.start();
-        try{
-            long time = System.nanoTime();
-            while (true){
-                if(time>1000000000){
-                    if(result.isDone()){
-                        break;
-                    }
-                    time=System.nanoTime();
-                }
+        try {
+            while (!result.isDone()) {
+                TimeUnit.SECONDS.sleep(1);
             }
             System.out.println(result.get());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
